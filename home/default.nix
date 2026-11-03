@@ -1,15 +1,15 @@
 { inputs, ... }:
 {
-  home-manager.users.lzirox = { pkgs, ... }: {
+  home-manager.users.lzirox = { pkgs, config, ... }: {
     nixpkgs.config.allowUnfree = true;
 
     imports = [
       inputs.nix-flatpak.homeManagerModules.nix-flatpak
 
       # Programas
-      ./programs/kitty.nix
       ./programs/firefox.nix
       ./programs/vscode.nix
+      ./programs/desktop.nix
 
       # Shell
       ./shell/fish.nix
@@ -19,9 +19,18 @@
     home.homeDirectory = "/home/lzirox";
     home.stateVersion = "26.05";
 
+    home.sessionVariables = {
+      NH_FLAKE = "${config.home.homeDirectory}/dotfiles";
+    };
+
+    home.sessionPath = [
+      "${config.home.homeDirectory}/.config/quickshell/bin"
+    ];
+
     home.packages = with pkgs; [
       # Escritorio
       wofi
+      kitty
       grim
       slurp
       kdePackages.dolphin
@@ -34,7 +43,6 @@
       wl-clipboard
       libnotify
       matugen
-      inputs.rose-pine-hyprcursor.packages.${pkgs.stdenv.hostPlatform.system}.default
 
       # Lenguajes y Gestores de Paquetes
       python314

@@ -1,0 +1,84 @@
+{
+    "workbench.colorTheme": "Kanagawa",
+    "workbench.colorCustomizations": {
+        "editor.background": "{{ colors.background.dark.hex }}",
+        "sideBar.background": "{{ colors.surface_container_low.dark.hex }}",
+        "sideBar.foreground": "{{ colors.on_surface_variant.dark.hex }}",
+        "sideBarTitle.foreground": "{{ colors.primary.dark.hex }}",
+        "activityBar.background": "{{ colors.surface_container_low.dark.hex }}",
+        "activityBar.foreground": "{{ colors.primary.dark.hex }}",
+        "activityBar.activeBorder": "{{ colors.primary.dark.hex }}",
+        "editorGroupHeader.tabsBackground": "{{ colors.surface_container_low.dark.hex }}",
+        "tab.inactiveBackground": "{{ colors.surface_container_low.dark.hex }}",
+        "tab.inactiveForeground": "{{ colors.on_surface_variant.dark.hex }}",
+        "tab.activeBackground": "{{ colors.background.dark.hex }}",
+        "tab.activeForeground": "{{ colors.on_surface.dark.hex }}",
+        "tab.activeBorder": "{{ colors.primary.dark.hex }}",
+        "statusBar.background": "{{ colors.primary.dark.hex }}",
+        "statusBar.foreground": "{{ colors.on_primary.dark.hex }}",
+        "editor.lineHighlightBackground": "{{ colors.surface_container_high.dark.hex }}44",
+        "editor.selectionBackground": "{{ colors.primary_container.dark.hex }}66"
+    },
+    "editor.tokenColorCustomizations": {
+        "textMateRules": [
+            {
+                "name": "Palabras clave en cursiva",
+                "scope": [
+                    "keyword",
+                    "keyword.control",
+                    "storage.modifier"
+                ],
+                "settings": {
+                    "fontStyle": "italic"
+                }
+            },
+            {
+                "name": "Variables y parámetros en cursiva",
+                "scope": [
+                    "variable",
+                    "variable.parameter",
+                    "variable.language.super",
+                    "variable.language.this",
+                    "entity.other.attribute-name"
+                ],
+                "settings": {
+                    "fontStyle": "italic"
+                }
+            },
+            {
+                "name": "Comentarios en cursiva",
+                "scope": [
+                    "comment",
+                    "comment.line.double-slash",
+                    "comment.block.documentation",
+                    "punctuation.definition.comment"
+                ],
+                "settings": {
+                    "fontStyle": "italic"
+                }
+            },
+            {
+                "name": "Funciones y métodos en negrita",
+                "scope": [
+                    "entity.name.function",
+                    "support.function",
+                    "support.function.any-method",
+                    "variable.function",
+                    "meta.require"
+                ],
+                "settings": {
+                    "fontStyle": "bold"
+                }
+            },
+            {
+                "name": "Operadores en negrita",
+                "scope": [
+                    "keyword.operator"
+                ],
+                "settings": {
+                    "fontStyle": "bold"
+                }
+            }
+        ]
+    }
+}

@@ -7,31 +7,46 @@
 
       # Navegación y Edición
       cdnix = "cd ~/dotfiles && nvim .";
+      cddesk = "cd ~/dotfiles/home/config && nvim .";
       nconf = "nvim ~/dotfiles/hosts/nixos/default.nix";
       nflake = "nvim ~/dotfiles/flake.nix";
 
       # Reconstrucción del Sistema
-      nswitch = "sudo nixos-rebuild switch --flake ~/dotfiles#nixos";
-      ntest = "sudo nixos-rebuild test --flake ~/dotfiles#nixos";
-      nboot = "sudo nixos-rebuild boot --flake ~/dotfiles#nixos";
-      ndry = "nixos-rebuild dry-build --flake ~/dotfiles#nixos";
+      nswitch = "git -C ~/dotfiles add -A && nh os switch";
+      ntest = "git -C ~/dotfiles add -A && nh os test";
+      nboot = "git -C ~/dotfiles add -A && nh os boot";
+      ndry = "git -C ~/dotfiles add -A && nh os switch --dry";
 
       # Mantenimiento y Flake
-      nupdate = "nix flake update --flake ~/dotfiles";
-      ngc = "sudo nix-collect-garbage -d && nix-collect-garbage -d";
+      nupdate = "git -C ~/dotfiles add -A && nh os switch -u";
+      ngc = "nh clean all --keep 3";
     };
 
     interactiveShellInit = ''
       set -g fish_greeting ""
+
+      # Cargar scripts y funciones modulares
+      if test -f ~/dotfiles/home/shell/scripts/agy.fish
+          source ~/dotfiles/home/shell/scripts/agy.fish
+      end
+      if test -f ~/dotfiles/home/shell/scripts/tasogare.fish
+          source ~/dotfiles/home/shell/scripts/tasogare.fish
+      end
     '';
 
     functions = {
-      agy-chat = ''
-        set -l prev_dir (pwd)
-        mkdir -p ~/Documents/chat
-        cd ~/Documents/chat
-        agy $argv
-        cd $prev_dir
+      deskconf = ''
+        set -l base_dir ~/dotfiles/home/config
+
+        if test (count $argv) -eq 0
+            cd $base_dir; and nvim .
+        else
+            if test -d $base_dir/$argv[1]
+                cd $base_dir/$argv[1]; and nvim .
+            else
+                echo "No se encontró '$argv[1]' en $base_dir"
+            end
+        end
       '';
     };
   };
