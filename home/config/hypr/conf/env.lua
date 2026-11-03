@@ -1,0 +1,2 @@
+-- See https://wiki.hypr.land/Configuring/Advanced-and-Cool/Environment-variables/
+-- Las variables globales de sesión y cursores son gestionadas directamente por NixOS.
