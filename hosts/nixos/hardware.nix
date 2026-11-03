@@ -21,7 +21,7 @@
     "usb_storage"
     "sd_mod"
   ];
-  boot.initrd.kernelModules = [ ];
+  boot.initrd.kernelModules = [ "amdgpu" ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
@@ -37,6 +37,12 @@
       "fmask=0077"
       "dmask=0077"
     ];
+  };
+
+  fileSystems."/home/lzirox/Storage" = {
+    device = "/dev/disk/by-uuid/6b86b2cb-1c5d-4073-8f48-cb15e47f36cc";
+    fsType = "ext4";
+    options = [ "nofail" ];
   };
 
   swapDevices = [ ];
