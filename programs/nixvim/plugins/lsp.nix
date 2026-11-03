@@ -2,6 +2,9 @@
 {
   programs.nixvim.plugins.lsp = {
     enable = true;
+    onAttach = ''
+      client.server_capabilities.semanticTokensProvider = nil
+    '';
     servers = {
       # Nix
       nixd.enable = true;
@@ -20,8 +23,26 @@
       yamlls.enable = true;
       dockerls.enable = true;
 
+      # Python
+      pyright.enable = true;
+
+      # QML / Quickshell
+      qmlls.enable = true;
+
+      # Lua
+      lua_ls = {
+        enable = true;
+        settings.telemetry.enable = false;
+      };
+
+      # TOML
+      taplo.enable = true;
+
       # Shell
       bashls.enable = true;
+
+      # Markdown
+      marksman.enable = true;
     };
 
     keymaps = {
@@ -31,10 +52,6 @@
         "K" = "hover";
         "<leader>rn" = "rename";
         "<leader>ca" = "code_action";
-      };
-      diagnostic = {
-        "[d" = "goto_prev";
-        "]d" = "goto_next";
       };
     };
   };

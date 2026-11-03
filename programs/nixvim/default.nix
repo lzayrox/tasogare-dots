@@ -8,6 +8,8 @@
     ./plugins/conform.nix
     ./plugins/cmp.nix
     ./plugins/lsp.nix
+    ./plugins/toggleterm.nix
+    ./plugins/markdown.nix
   ];
 
   programs.nixvim = {

@@ -2,6 +2,8 @@
 {
   programs.nixvim = {
     opts = {
+      clipboard = "unnamedplus";
+      conceallevel = 2;
       number = true;
       relativenumber = true;
       shiftwidth = 4;
