@@ -9,6 +9,8 @@ in
     withUWSM = true;
   };
 
+  programs.hyprlock.enable = true;
+
   # Única fuente de verdad para variables de sesión y cursores en todo el sistema
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";

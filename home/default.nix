@@ -43,6 +43,8 @@
       wl-clipboard
       libnotify
       matugen
+      playerctl
+      brightnessctl
 
       # Lenguajes y Gestores de Paquetes
       python314
