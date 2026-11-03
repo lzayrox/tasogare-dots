@@ -1,0 +1,207 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cmd="${1:-help}"
+shift || true
+
+case "$cmd" in
+    start)
+        if command -v uwsm >/dev/null 2>&1; then
+            exec uwsm app -- quickshell
+        else
+            exec quickshell
+        fi
+        ;;
+    reload|restart)
+        pkill -9 quickshell 2>/dev/null || true
+        sleep 0.25
+        if command -v uwsm >/dev/null 2>&1; then
+            systemd-run --user --slice=app.slice uwsm app -- quickshell >/dev/null 2>&1
+        else
+            nohup quickshell >/dev/null 2>&1 &
+        fi
+        ;;
+    stop|kill)
+        pkill quickshell 2>/dev/null || true
+        ;;
+    log|logs)
+        exec qs log -n -t "${1:-40}"
+        ;;
+    ipc)
+        exec qs ipc show
+        ;;
+    launcher)
+        exec qs ipc call island launcher
+        ;;
+    wallpaper|wallpapers)
+        exec qs ipc call island wallpapers
+        ;;
+    control-center|cc)
+        exec qs ipc call island controlCenter
+        ;;
+    notifications)
+        exec qs ipc call island notifications
+        ;;
+    workspaces)
+        exec qs ipc call island workspaces
+        ;;
+    close)
+        exec qs ipc call island close
+        ;;
+    island)
+        sub="${1:-toggle}"
+        shift || true
+        case "$sub" in
+            toggle)
+                sec="${1:-center}"
+                panel="${2:-}"
+                if [ -n "$panel" ]; then
+                    exec qs ipc call island togglePanel "$sec" "$panel"
+                else
+                    exec qs ipc call island toggle "$sec"
+                fi
+                ;;
+            open)
+                sec="${1:-center}"
+                panel="${2:-}"
+                if [ -n "$panel" ]; then
+                    exec qs ipc call island openPanel "$sec" "$panel"
+                else
+                    exec qs ipc call island open "$sec"
+                fi
+                ;;
+            close)
+                exec qs ipc call island close
+                ;;
+        esac
+        ;;
+    volume|audio)
+        sub="${1:-}"
+        shift || true
+        case "$sub" in
+            up)
+                exec qs ipc call audio volumeUp
+                ;;
+            down)
+                exec qs ipc call audio volumeDown
+                ;;
+            set)
+                exec qs ipc call audio setVolume "${1:-50}"
+                ;;
+            mute)
+                exec qs ipc call audio mute
+                ;;
+            mic-mute|mic)
+                exec qs ipc call audio micMute
+                ;;
+        esac
+        ;;
+    media)
+        sub="${1:-play-pause}"
+        case "$sub" in
+            play-pause|toggle)
+                exec qs ipc call media playPause
+                ;;
+            next)
+                exec qs ipc call media next
+                ;;
+            prev|previous)
+                exec qs ipc call media prev
+                ;;
+        esac
+        ;;
+    brightness)
+        sub="${1:-up}"
+        step="${2:-5}"
+        case "$sub" in
+            up)
+                exec brightnessctl -e4 -n2 set "${step}%+"
+                ;;
+            down)
+                exec brightnessctl -e4 -n2 set "${step}%-"
+                ;;
+        esac
+        ;;
+    theme)
+        sub="${1:-toggle}"
+        shift || true
+        case "$sub" in
+            toggle)
+                exec qs ipc call theme toggleMode
+                ;;
+            dark)
+                exec qs ipc call theme setMode dark
+                ;;
+            light)
+                exec qs ipc call theme setMode light
+                ;;
+            wallpaper)
+                exec qs ipc call theme setWallpaper "$1"
+                ;;
+            seed)
+                exec qs ipc call theme setSeed "${1:-0}"
+                ;;
+        esac
+        ;;
+    notifs|notify)
+        sub="${1:-panel}"
+        shift || true
+        case "$sub" in
+            panel|toggle)
+                exec qs ipc call island notifications
+                ;;
+            dnd)
+                exec qs ipc call notifs toggleDnd
+                ;;
+            clear)
+                exec qs ipc call notifs clear
+                ;;
+            test)
+                mode="${1:-normal}"
+                case "$mode" in
+                    suite|all)
+                        notify-send -a "Tasogare" -u low "Batería / Estado" "Notificación de prioridad baja (low)."
+                        notify-send -a "Tasogare" -u normal "Tasogare Shell" "Daemon de notificaciones funcionando correctamente."
+                        notify-send -a "Sistema" -u critical "Alerta Crítica" "Prueba de notificación urgente (critical)."
+                        ;;
+                    low|normal|critical)
+                        title="${2:-Tasogare Shell}"
+                        body="${3:-Prueba de notificación ($mode) desde tsg CLI.}"
+                        exec notify-send -a "Tasogare" -u "$mode" "$title" "$body"
+                        ;;
+                    *)
+                        title="$mode"
+                        body="${2:-Prueba de notificación desde tsg CLI.}"
+                        exec notify-send -a "Tasogare" -u normal "$title" "$body"
+                        ;;
+                esac
+                ;;
+        esac
+        ;;
+    session)
+        sub="${1:-exit}"
+        case "$sub" in
+            exit|logout)
+                if command -v hyprshutdown >/dev/null 2>&1; then
+                    exec hyprshutdown
+                else
+                    exec hyprctl dispatch exit
+                fi
+                ;;
+        esac
+        ;;
+    help|--help|-h|*)
+        printf "Tasogare Shell CLI (tsg)\n\n"
+        printf "Usage: tsg <command> [args]\n\n"
+        printf "Commands:\n"
+        printf "  start | reload | stop | log [n] | ipc\n"
+        printf "  launcher | wallpapers | control-center | notifications | workspaces | close\n"
+        printf "  island <toggle|open|close> [section] [panel]\n"
+        printf "  volume <up|down|mute|mic-mute|set <0-150>>\n"
+        printf "  media <play-pause|next|prev>\n"
+        printf "  brightness <up|down> [step]\n"
+        printf "  theme <toggle|dark|light|wallpaper <path>|seed <0-3>>\n"
+        printf "  notifs <panel|dnd|clear|test [low|normal|critical|suite] [title] [body]>\n"
+        printf "  session <exit>\n"
+        ;;
+esac

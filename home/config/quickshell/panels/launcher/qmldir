@@ -1,0 +1,5 @@
+AppItem 1.0 AppItem.qml
+AppList 1.0 AppList.qml
+SearchBar 1.0 SearchBar.qml
+WallpaperList 1.0 WallpaperList.qml
+WallpaperItem 1.0 WallpaperItem.qml

@@ -1,0 +1,10 @@
+singleton Audio 1.0 Audio.qml
+singleton ControlCenter 1.0 ControlCenter.qml
+singleton Hypr 1.0 Hypr.qml
+Ipc 1.0 Ipc.qml
+singleton Media 1.0 Media.qml
+singleton Network 1.0 Network.qml
+singleton Notifs 1.0 Notifs.qml
+singleton Search 1.0 Search.qml
+singleton ShellState 1.0 ShellState.qml
+singleton Theme 1.0 Theme.qml
