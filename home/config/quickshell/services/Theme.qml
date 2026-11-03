@@ -201,7 +201,7 @@ Singleton {
 
         matugenProc.exec(args);
 
-        syncProc.exec(["sh", "-c", "mkdir -p ~/.local/state/quickshell /var/cache/greeter 2>/dev/null; printf '{\"path\":\"%s\"}\\n' \"$1\" > ~/.local/state/quickshell/wallpaper.json; cp \"$1\" /var/cache/greeter/wallpaper 2>/dev/null || true", "sh", targetPath]);
+        syncProc.exec(["sh", "-c", "mkdir -p ~/.local/state/quickshell ~/.cache /var/cache/greeter 2>/dev/null; printf '{\"path\":\"%s\"}\\n' \"$1\" > ~/.local/state/quickshell/wallpaper.json; cp \"$1\" ~/.cache/current_wallpaper 2>/dev/null || true; cp \"$1\" /var/cache/greeter/wallpaper 2>/dev/null || true", "sh", targetPath]);
     }
 
     onModeChanged: {

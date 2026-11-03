@@ -5,6 +5,7 @@ local mainMod = "SUPER"
 hl.bind(mainMod .. " + RETURN",    hl.dsp.exec_cmd(programs.terminal))
 hl.bind(mainMod .. " + SHIFT + R", hl.dsp.exec_cmd(sh .. " reload"))
 hl.bind(mainMod .. " + Q",         hl.dsp.window.close())
+hl.bind(mainMod .. " + L",         hl.dsp.exec_cmd("hyprlock"))
 hl.bind(mainMod .. " + M",         hl.dsp.exec_cmd(sh .. " session exit"))
 hl.bind(mainMod .. " + E",         hl.dsp.exec_cmd(programs.fileManager))
 hl.bind(mainMod .. " + Z",         hl.dsp.exec_cmd(programs.browser))
